@@ -15,3 +15,11 @@
     <code>streamlit run app.py</code>
   </li>
 <ol>
+
+## Repository Structure
+| Folder/Code | Content |
+| ------------- | ------------- |
+| .streamlit | Contém o confiq.toml para definir certos parâmetros de design |
+| data | Contém os dados  no formato CSV |
+| app.py |	Contém o aplicativo Streamlit real |
+| requirements.txt | Contém todos os requisitos (necessários para compartilhamento Streamlit) |
