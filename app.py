@@ -6,13 +6,26 @@ import plotly.express as px  # interactive charts
 import streamlit as st  # 🎈 data web app development
 
 st.set_page_config(
-    page_title="Real-Time Data Science Dashboard",
-    page_icon="✅",
+    page_title="Dashboard E-commerce Olist",
+    page_icon="chart_with_upwards_trend",
     layout="wide",
 )
 
 # read csv from a github repo
 dataset_url = "https://raw.githubusercontent.com/Lexie88rus/bank-marketing-analysis/master/bank.csv"
+dim_avaliacao = pd.read_csv('data/dimAvaliacao.csv')
+dim_localizacao = pd.read_csv('data/dimLocalizacao.csv')
+dim_pagamento = pd.read_csv('data/dimLocalizacao.csv')
+dim_produto = pd.read_csv('data/dimProduto.csv')
+dim_tempo = pd.read_csv('data/dimTempo.csv')
+fato_pedido = pd.read_csv('data/fatoPedido.csv')
+
+'''st.write(dim_avaliacao)
+st.write(dim_localizacao)
+st.write(dim_pagamento)
+st.write(dim_produto)
+st.write(dim_tempo)
+st.write(fato_pedido)'''
 
 # read csv from a URL
 @st.experimental_memo
@@ -22,10 +35,11 @@ def get_data() -> pd.DataFrame:
 df = get_data()
 
 # dashboard title
-st.title("Real-Time / Live Data Science Dashboard")
-
+st.title("Dashboard E-commerce Olist")
+st.markdown('Este projeto apresenta o resultado da modelagem do DW em relação aos Pedidos.')
 # top-level filters
-job_filter = st.selectbox("Select the Job", pd.unique(df["job"]))
+opcoes_arq = ['Avaliação','Tempo','Localização','Pagamento','Produto']
+job_filter = st.selectbox("Selecione as páginas", pd.unique(df["job"]))
 
 # creating a single-element container
 placeholder = st.empty()
