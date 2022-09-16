@@ -1,5 +1,4 @@
 import time  # to simulate a real time data, time loop
-
 import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # interactive charts
@@ -13,6 +12,8 @@ st.set_page_config(
 
 # read csv from a github repo
 dataset_url = "https://raw.githubusercontent.com/Lexie88rus/bank-marketing-analysis/master/bank.csv"
+
+# read csv from DW
 dim_avaliacao = pd.read_csv('data/dimAvaliacao.csv')
 dim_localizacao = pd.read_csv('data/dimLocalizacao.csv')
 dim_pagamento = pd.read_csv('data/dimLocalizacao.csv')
@@ -37,18 +38,17 @@ df = get_data()
 # dashboard title
 st.title("Dashboard E-commerce Olist")
 st.markdown('Este projeto apresenta o resultado da modelagem do DW em relação aos Pedidos.')
-# top-level filters
-opcoes_arq = st.selectbox("Selecione os arquivos a serem consultados",('Avaliação','Tempo','Localização','Pagamento','Produto'),)
-job_filter = st.selectbox("Selecione as páginas", pd.unique(df["job"]))
 
+# top-level filters
+
+with st.sidebar:
+    st.header('Modelagem de Dados - Grupo 1')
+    opcoes_arq = st.selectbox("Selecione os arquivos a serem consultados",('Avaliação','Tempo','Localização','Pagamento','Produto'),)
+    job_filter = st.selectbox("Selecione as páginas", pd.unique(df["job"]))
 # creating a single-element container
 placeholder = st.empty()
-
 # dataframe filter
 df = df[df["job"] == job_filter]
-
-
-
 df["age_new"] = df["age"] * np.random.choice(range(1, 5))
 df["balance_new"] = df["balance"] * np.random.choice(range(1, 5))
 
