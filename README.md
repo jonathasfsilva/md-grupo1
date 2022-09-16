@@ -16,7 +16,7 @@
   </li>
 <ol>
 
-## Repository Structure
+## Estrutura do repositorio 
 | Folder/Code | Content |
 | ------------- | ------------- |
 | .streamlit | Contém o confiq.toml para definir certos parâmetros de design |
