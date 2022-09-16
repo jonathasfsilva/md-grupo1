@@ -17,7 +17,7 @@
 <ol>
 
 ## Estrutura do repositorio 
-| Folder/Code | Content |
+| Pasta/Código | Contém |
 | ------------- | ------------- |
 | .streamlit | Contém o confiq.toml para definir certos parâmetros de design |
 | data | Contém os dados  no formato CSV |
