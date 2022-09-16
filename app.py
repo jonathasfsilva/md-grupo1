@@ -20,7 +20,7 @@ dim_produto = pd.read_csv('data/dimProduto.csv')
 dim_tempo = pd.read_csv('data/dimTempo.csv')
 fato_pedido = pd.read_csv('data/fatoPedido.csv')
 
-st.write(dim_avaliacao)
+#st.write(dim_avaliacao)
 #st.write(dim_localizacao)
 #st.write(dim_pagamento)
 #st.write(dim_produto)
@@ -38,7 +38,7 @@ df = get_data()
 st.title("Dashboard E-commerce Olist")
 st.markdown('Este projeto apresenta o resultado da modelagem do DW em relação aos Pedidos.')
 # top-level filters
-opcoes_arq = ['Avaliação','Tempo','Localização','Pagamento','Produto']
+opcoes_arq = st.selectbox("Selecione os arquivos a serem consultados",('Avaliação','Tempo','Localização','Pagamento','Produto'),)
 job_filter = st.selectbox("Selecione as páginas", pd.unique(df["job"]))
 
 # creating a single-element container
@@ -89,16 +89,42 @@ with placeholder.container():
     # create two columns for charts
     fig_col1, fig_col2 = st.columns(2)
     with fig_col1:
-        st.markdown("### First Chart")
+        st.markdown("### First Density Heatmap")
         fig = px.density_heatmap(
-            data_frame=df, y="age_new", x="marital"
-        )
+            data_frame=df, y="age_new", x="marital")
         st.write(fig)
         
     with fig_col2:
-        st.markdown("### Second Chart")
+        st.markdown("### Second Histogram")
         fig2 = px.histogram(data_frame=df, x="age_new")
         st.write(fig2)
+        
+    fig_col3, fig_col4 = st.columns(2)
+    with fig_col3:
+        st.markdown("### Third  Bar Chart")
+        fig3 =  px.bar(df, y="age_new", x="marital") 
+        st.write(fig3)
+    with fig_col4:
+        st.markdown("### Fourth  Scatter Chart")
+        fig4 =  px.scatter(df, y="age_new", x="marital") 
+        st.write(fig4)
+    
+    fig_col5, fig_col6= st.columns(2)
+
+    with fig_col5:
+        st.markdown("### Fifth  line Chart")
+        fig5 = px.line(df, y="age_new")
+        st.write(fig5)
+
+    with fig_col6:
+        st.markdown("### Sixth  Pie Chart")
+        fig6 = px.pie(df, values="age_new", names="marital")
+        st.write(fig6)
+
+    
+    st.markdown("### Seventh  Box Chart")
+    fig7 = px.box(df, y="age_new", x="marital")
+    st.write(fig7)
 
     st.markdown("### Detailed Data View")
     st.dataframe(df)
