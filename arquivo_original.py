@@ -4,7 +4,11 @@ import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # interactive charts
 import streamlit as st  # 🎈 data web app development
 
-
+'''st.set_page_config(
+    page_title="Dashboard E-commerce Olist",
+    page_icon="chart_with_upwards_trend",
+    layout="wide",
+)'''
 # read csv from a github repo
 dataset_url = "https://raw.githubusercontent.com/Lexie88rus/bank-marketing-analysis/master/bank.csv"
 
