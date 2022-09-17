@@ -21,7 +21,7 @@ dim_produto = pd.read_csv('data/dimProduto.csv')
 dim_tempo = pd.read_csv('data/dimTempo.csv')
 fato_pedido = pd.read_csv('data/fatoPedido.csv')
 
-#st.write(dim_avaliacao)
+st.write(dim_avaliacao)
 #st.write(dim_localizacao)
 #st.write(dim_pagamento)
 #st.write(dim_produto)
