@@ -1,4 +1,5 @@
 #import time  # to simulate a real time data, time loop
+from operator import xor
 import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # interactive charts
@@ -36,7 +37,7 @@ if opcoes_arq == 'Pedidos por dia da semana':
     bar_chart(fig_col3,df, x,y)
     scatter_chart(fig_col4, df ,x, y)
     line_chart(fig_col5, df ,x)
-    pie_chart(fig_col6, df ,x, y)
+    pie_chart(fig_col6, df ,y, x)
     box_chart(df,x,y)
 
     st.markdown('## View Dataframe')
@@ -44,21 +45,83 @@ if opcoes_arq == 'Pedidos por dia da semana':
 elif opcoes_arq == 'Pedidos em datas comemorativas':
     st.write('Períodos que ocorrem maior quantidade de pedidos que estão relacionados a datas comemorativas')
     df = pd.DataFrame(questao2)
+
+    #Definição das variaveis 
+    x = df["dia_mes"]
+    y = df["quantidade_pedido"]
+    color = df["dia_ehdiautil"]
+
+    #Chamada dos gráficos
+    density_heatmap(fig_col1,df,x,y)
+    histogram(fig_col2,df,x,y)
+    bar_chart(fig_col3,df, x,y)
+    scatter_chart(fig_col4, df ,x, y)
+    line_chart(fig_col5, df ,x)
+    pie_chart(fig_col6, df ,x, y)
+    box_chart(df,x,y)
+
+
     st.markdown('## View Dataframe')
     st.dataframe(df)
+
 elif opcoes_arq == 'Avaliação dos produtos por categorias':
     st.write('Média de avaliação dos pedidos por categoria de produto')
     df = pd.DataFrame(questao3)
+
+    #Definição das variaveis 
+    x = df["quantidade_pedido"]
+    y = df["media_nota_avaliacao"]
+    color = df["categoria_produto"]
+
+    #Chamada dos gráficos
+    density_heatmap(fig_col1,df,x,y)
+    histogram(fig_col2,df,x,y)
+    bar_chart(fig_col3,df, x,y)
+    scatter_chart(fig_col4, df ,x, y)
+    line_chart(fig_col5, df ,x)
+    pie_chart(fig_col6, df ,y, color)
+    box_chart(df,x,y)
+
     st.markdown('## View Dataframe')
     st.dataframe(df)
 elif opcoes_arq == 'Forma de pagamento do pedido por estado':
     st.write('Quantidade de pedidos em relação a forma de pagamento por estado ')
     df = pd.DataFrame(questao4)
+
+    #Definição das variaveis 
+    x = df["quantidade_pedido"]
+    y = df["media_nota_avaliacao"]
+    color = df["categoria_produto"]
+
+    #Chamada dos gráficos
+    density_heatmap(fig_col1,df,x,y)
+    histogram(fig_col2,df,x,y)
+    bar_chart(fig_col3,df, x,y)
+    scatter_chart(fig_col4, df ,x, y)
+    line_chart(fig_col5, df ,x)
+    pie_chart(fig_col6, df , color,x)
+    box_chart(df,x,y)
+    
     st.markdown('## View Dataframe')
     st.dataframe(df)
+
 elif opcoes_arq == 'Categoria do pedido por estação do ano':
     st.write('Quantidade de  categorias de pedido  por estação do ano')
     df = pd.DataFrame(questao5)
+
+    #Definição das variaveis 
+    x = df["quantidade_pedido"]
+    y = df["categoria_produto"]
+    color = df["estacoe"]
+
+    #Chamada dos gráficos
+    density_heatmap(fig_col1,df,x,y)
+    histogram(fig_col2,df,x,y)
+    bar_chart(fig_col3,df, x,y)
+    scatter_chart(fig_col4, df ,x, y)
+    line_chart(fig_col5, df ,x)
+    pie_chart(fig_col6, df , color,x)
+    box_chart(df,x,y)
     st.markdown('## View Dataframe')
     st.dataframe(df)
 else:
