@@ -12,7 +12,7 @@
   </li>
 
   <li>Execute:
-    <code>streamlit run app.py</code>
+    <code>streamlit run ecommerce.py</code>
   </li>
 <ol>
 

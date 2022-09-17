@@ -4,29 +4,9 @@ import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # interactive charts
 import streamlit as st  # 🎈 data web app development
 
-st.set_page_config(
-    page_title="Dashboard E-commerce Olist",
-    page_icon="chart_with_upwards_trend",
-    layout="wide",
-)
 
 # read csv from a github repo
 dataset_url = "https://raw.githubusercontent.com/Lexie88rus/bank-marketing-analysis/master/bank.csv"
-
-# read csv from DW
-dim_avaliacao = pd.read_csv('data/dimAvaliacao.csv')
-dim_localizacao = pd.read_csv('data/dimLocalizacao.csv')
-dim_pagamento = pd.read_csv('data/dimLocalizacao.csv')
-dim_produto = pd.read_csv('data/dimProduto.csv')
-dim_tempo = pd.read_csv('data/dimTempo.csv')
-fato_pedido = pd.read_csv('data/fatoPedido.csv')
-
-st.write(dim_avaliacao)
-#st.write(dim_localizacao)
-#st.write(dim_pagamento)
-#st.write(dim_produto)
-#st.write(dim_tempo)
-#st.write(fato_pedido)
 
 # read csv from a URL
 @st.experimental_memo
@@ -39,14 +19,14 @@ df = get_data()
 st.title("Dashboard E-commerce Olist")
 st.markdown('Este projeto apresenta o resultado da modelagem do DW em relação aos Pedidos.')
 
-# top-level filters
-
+# Escolha dos filtros
 with st.sidebar:
     st.header('Modelagem de Dados - Grupo 1')
-    opcoes_arq = st.selectbox("Selecione os arquivos a serem consultados",('Avaliação','Tempo','Localização','Pagamento','Produto'),)
     job_filter = st.selectbox("Selecione as páginas", pd.unique(df["job"]))
+
 # creating a single-element container
 placeholder = st.empty()
+
 # dataframe filter
 df = df[df["job"] == job_filter]
 df["age_new"] = df["age"] * np.random.choice(range(1, 5))
@@ -62,70 +42,41 @@ count_married = int(
 
 balance = np.mean(df["balance_new"])
 
+
 with placeholder.container():
-
-    # create three columns
     kpi1, kpi2, kpi3 = st.columns(3)
-
     # fill in those three columns with respective metrics or KPIs
-    kpi1.metric(
+    metrica1 = kpi1.metric(
         label="Age ⏳",
         value=round(avg_age),
         delta=round(avg_age) - 10,
     )
     
-    kpi2.metric(
+    metrica2 = kpi2.metric(
         label="Married Count 💍",
         value=int(count_married),
         delta=-10 + count_married,
     )
     
-    kpi3.metric(
+    metrica3 = kpi3.metric(
         label="A/C Balance ＄",
         value=f"$ {round(balance,2)} ",
         delta=-round(balance / count_married) * 100,
     )
+fig_col1, fig_col2 = st.columns(2)
 
-    # create two columns for charts
-    fig_col1, fig_col2 = st.columns(2)
-    with fig_col1:
-        st.markdown("### First Density Heatmap")
-        fig = px.density_heatmap(
-            data_frame=df, y="age_new", x="marital")
-        st.write(fig)
-        
-    with fig_col2:
-        st.markdown("### Second Histogram")
-        fig2 = px.histogram(data_frame=df, x="age_new")
-        st.write(fig2)
-        
-    fig_col3, fig_col4 = st.columns(2)
-    with fig_col3:
-        st.markdown("### Third  Bar Chart")
-        fig3 =  px.bar(df, y="age_new", x="marital") 
-        st.write(fig3)
-    with fig_col4:
-        st.markdown("### Fourth  Scatter Chart")
-        fig4 =  px.scatter(df, y="age_new", x="marital") 
-        st.write(fig4)
-    
-    fig_col5, fig_col6= st.columns(2)
+with fig_col1:
+    st.markdown("### Density Heatmap")
+    fig = px.density_heatmap(df, y = "age_new", x = "marital")
+    st.write(fig)
 
-    with fig_col5:
-        st.markdown("### Fifth  line Chart")
-        fig5 = px.line(df, y="age_new")
-        st.write(fig5)
 
-    with fig_col6:
-        st.markdown("### Sixth  Pie Chart")
-        fig6 = px.pie(df, values="age_new", names="marital")
-        st.write(fig6)
+with fig_col2:
+    st.markdown("###  Histogram")
+    fig2 = px.histogram(df,x = "marital")
+    st.write(fig2)
 
-    
-    st.markdown("### Seventh  Box Chart")
-    fig7 = px.box(df, y="age_new", x="marital")
-    st.write(fig7)
 
-    st.markdown("### Detailed Data View")
-    st.dataframe(df)
-    
+#Exibindo Dataframe
+st.markdown('##View Dashboard')
+st.dataframe(df)
