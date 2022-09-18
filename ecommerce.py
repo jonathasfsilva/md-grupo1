@@ -1,11 +1,10 @@
-#import time  # to simulate a real time data, time loop
+from curses import color_pair
 from operator import xor
 import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
-import plotly.express as px  # interactive charts
-import streamlit as st  # 🎈 data web app development
+import plotly.express as px  # Gráficos interativos
+import streamlit as st  # 🎈 data web app desenvolvimento
 #from graficos import *
-
 
 #Comando de execução do streamlit
 st.set_page_config(
@@ -29,6 +28,7 @@ st.subheader('Este projeto apresenta o resultado da modelagem do DW gerado por m
 with st.sidebar:
     st.header('Modelagem de Dados - Grupo 1')
     opcoes_arq = st.selectbox("Opções de Consultas:",('Pedidos em datas comemorativas','Pedidos por dia da semana','Avaliação dos produtos por categorias','Forma de pagamento do pedido por estado','Categoria do pedido por estação do ano'))
+
 # Organizando graficos lado a lado por meio de colunas
 placeholder = st.empty() # criando um  container para as metricas
 with placeholder.container():
@@ -59,7 +59,6 @@ def metrica3(kpi3,value,delta,label):
             delta=delta,)
     return metrica3
 
-
 #Graficos
 def density_heatmap(fig_col1,df,x,y):
     with fig_col1:
@@ -73,7 +72,7 @@ def histogram(fig_col2,df,x,y):
         fig2 = px.histogram(df,x,y)
         return st.write(fig2)
 
-def bar_chart(fig_col3,df, x,y):
+def bar_chart(fig_col3,df, x,y,color):
     with fig_col3:
         st.markdown("###  Bar Chart")
         fig3 =  px.bar(df, y, x) 
@@ -85,8 +84,7 @@ def  scatter_chart(fig_col4, df ,x, y):
         fig4 =  px.scatter(df, y, x) 
         return st.write(fig4)
 
-
-def line_chart(fig_col5, df ,y):
+def line_chart(fig_col5, df ,x,y):
     with fig_col5:
         st.markdown("### line Chart")
         fig5 = px.line(df, y)
@@ -105,105 +103,83 @@ def box_chart(df,x,y):
     
 #Condições dos Filtros
 if opcoes_arq == 'Pedidos por dia da semana':
-    st.write('Quantidade de pedidos realizados de acordo com os dias da semana ou final de semana')
     df = pd.DataFrame(questao1)
-   
     #Definição das variaveis 
     x = df["dia_semana"]
     y = df["quantidade_pedido"]
-    
     #Chamada dos gráficos
     density_heatmap(fig_col1,df,x,y)
     histogram(fig_col2,df,x,y)
-    bar_chart(fig_col3,df, x,y)
+    bar_chart(fig_col3,df, x,y,None)
     scatter_chart(fig_col4, df ,x, y)
-    line_chart(fig_col5, df ,x)
-    pie_chart(fig_col6, df ,y, x)
-    box_chart(df,x,y)
-
+    #Exibindo df
     st.markdown('## View Dataframe')
+    st.write('Quantidade de pedidos realizados de acordo com os dias da semana ou final de semana')
     st.dataframe(df)
+
 elif opcoes_arq == 'Pedidos em datas comemorativas':
-    st.write('Períodos que ocorrem maior quantidade de pedidos que estão relacionados a datas comemorativas')
     df = pd.DataFrame(questao2)
-
     #Definição das variaveis 
-    x = df["dia_mes"]
-    y = df["quantidade_pedido"]
+    y = df["dia_mes"]
+    x = df["quantidade_pedido"]
     color = df["dia_ehdiautil"]
-
     #Chamada dos gráficos
     density_heatmap(fig_col1,df,x,y)
     histogram(fig_col2,df,x,y)
-    bar_chart(fig_col3,df, x,y)
-    scatter_chart(fig_col4, df ,x, y)
-    line_chart(fig_col5, df ,x)
-    pie_chart(fig_col6, df ,x, y)
-    box_chart(df,x,y)
-
-
+    scatter_chart(fig_col3, df ,x, y)
+    line_chart(fig_col4, df,x,y)
+    #Exibindo df
     st.markdown('## View Dataframe')
+    st.write('Períodos que ocorrem maior quantidade de pedidos que estão relacionados a datas comemorativas')
     st.dataframe(df)
 
 elif opcoes_arq == 'Avaliação dos produtos por categorias':
-    st.write('Média de avaliação dos pedidos por categoria de produto')
     df = pd.DataFrame(questao3)
-
     #Definição das variaveis 
     x = df["quantidade_pedido"]
     y = df["media_nota_avaliacao"]
     color = df["categoria_produto"]
-
     #Chamada dos gráficos
-    #density_heatmap(fig_col1,df,x,y)
-    histogram(fig_col2,df,x,y)
-    bar_chart(fig_col3,df, x,y)
-    scatter_chart(fig_col4, df ,x, y)
-    line_chart(fig_col5, df ,x)
-    pie_chart(fig_col6, df ,y, color)
-    box_chart(df,x,y)
-
+    histogram(fig_col1,df,x,color)
+    bar_chart(fig_col2,df, y,color,None)
+    scatter_chart(fig_col3, df ,x, y)
+    density_heatmap(fig_col4,df,color,x)
+    #Exibindo df
     st.markdown('## View Dataframe')
+    st.write('Média de avaliação dos pedidos por categoria de produto')
     st.dataframe(df)
-elif opcoes_arq == 'Forma de pagamento do pedido por estado':
-    st.write('Quantidade de pedidos em relação a forma de pagamento por estado ')
-    df = pd.DataFrame(questao4)
 
+elif opcoes_arq == 'Forma de pagamento do pedido por estado':
+    df = pd.DataFrame(questao4)
     #Definição das variaveis 
     x = df["quantidade_pedido"]
-    y = df["media_nota_avaliacao"]
-    color = df["categoria_produto"]
-
+    y = df["estado_sigla"]
+    color = df["tipo_pagamento"]
     #Chamada dos gráficos
     density_heatmap(fig_col1,df,x,y)
-    histogram(fig_col2,df,x,y)
-    bar_chart(fig_col3,df, x,y)
+    histogram(fig_col2,df,y,x)
+    bar_chart(fig_col3,df,color,y,x)
     scatter_chart(fig_col4, df ,x, y)
-    line_chart(fig_col5, df ,x)
-    pie_chart(fig_col6, df , color,x)
-    box_chart(df,x,y)
-    
+    pie_chart(fig_col5, df , color,x)
+    #Exibindo df
     st.markdown('## View Dataframe')
+    st.write('Quantidade de pedidos em relação a forma de pagamento por estado ')
     st.dataframe(df)
 
 elif opcoes_arq == 'Categoria do pedido por estação do ano':
-    st.write('Quantidade de  categorias de pedido  por estação do ano')
     df = pd.DataFrame(questao5)
-
     #Definição das variaveis 
     x = df["quantidade_pedido"]
     y = df["categoria_produto"]
     color = df["estacoe"]
-
     #Chamada dos gráficos
     density_heatmap(fig_col1,df,x,y)
-    histogram(fig_col2,df,x,y)
-    bar_chart(fig_col3,df, x,y)
+    pie_chart(fig_col2, df , color,x)
+    histogram(fig_col3,df,color,x)
     scatter_chart(fig_col4, df ,x, y)
-    line_chart(fig_col5, df ,x)
-    pie_chart(fig_col6, df , color,x)
-    box_chart(df,x,y)
+    #Exibindo df
     st.markdown('## View Dataframe')
+    st.write('Quantidade de  categorias de pedido  por estação do ano')
     st.dataframe(df)
 else:
     st.write('Nada foi carregado, por favor selecione umas das opções presente no sidebar')
