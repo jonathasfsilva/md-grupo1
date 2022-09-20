@@ -18,6 +18,23 @@ questao2 = pd.read_csv('data/questao_2.csv')
 questao3 = pd.read_csv('data/questao_3.csv')
 questao4 = pd.read_csv('data/questao_4.csv')
 questao5 = pd.read_csv('data/questao_5.csv')
+fatoPedido = pd.read_csv('data/tabelas/fatoPedido.csv')
+dimLocalizacao = pd.read_csv('data/tabelas/dimLocalizacao.csv')
+dimPagamento = pd.read_csv('data/tabelas/dimPagamento.csv')
+
+#funcao_filtro_qtd_por_estado
+def tipo_de_pagamento(tipo_pagamento):
+    if tipo_pagamento == "Boleto":
+        tipo_pagamento = "boleto"
+    elif tipo_pagamento == "Cartão de Crédito":
+        tipo_pagamento = "credit_card"
+    elif tipo_pagamento == "Cartão de Débito":
+        tipo_pagamento = "debit_card"
+    elif tipo_pagamento == "Voucher":
+        tipo_pagamento = "voucher"
+    elif tipo_pagamento == "Indefinido":
+        tipo_pagamento = "indefinido"
+    return tipo_pagamento 
 
 # dashboard title
 st.title("Dashboard E-commerce Olist")
@@ -26,7 +43,7 @@ st.subheader('Este projeto apresenta o resultado da modelagem do DW gerado por m
 # Opções dos filtros
 with st.sidebar:
     st.header('Modelagem de Dados - Grupo 1')
-    opcoes_arq = st.selectbox("Opções de Consultas:",('Pedidos em datas comemorativas','Pedidos por dia da semana','Avaliação dos produtos por categorias','Forma de pagamento do pedido por estado','Categoria do pedido por estação do ano'))
+    opcoes_arq = st.selectbox("Opções de Consultas:",('Pedidos em datas comemorativas','Pedidos por dia da semana','Avaliação dos produtos por categorias','Forma de pagamento do pedido por estado','Categoria do pedido por estação do ano', 'Pedidos por Estado'))
 
 # Organizando graficos lado a lado por meio de colunas
 placeholder = st.empty() # criando um  container para as metricas
@@ -180,6 +197,26 @@ elif opcoes_arq == 'Categoria do pedido por estação do ano':
     st.markdown('## View Dataframe')
     st.write('Quantidade de  categorias de pedido  por estação do ano')
     st.dataframe(df)
+
+elif opcoes_arq == 'Pedidos por Estado':
+    with st.sidebar:
+        st.header("Filtro")
+        tipo_pagamento = st.selectbox(
+        'Qual meio de pagamento você deseja visualizar?',
+        ('Cartão de Crédito', 'Cartão de Débito', 'Boleto', 'Voucher', 'Indefinido'))
+    a = dimLocalizacao['estado_sigla']
+    b = dimPagamento['tipo_pagamento']
+    c = fatoPedido['valorPedido']
+    pagamento_localizacao = pd.DataFrame(np.column_stack([a, b, c]), columns=['estado', 'pagamento', 'valor'])
+    total = pagamento_localizacao.groupby(['pagamento', 'estado'])['pagamento'].count().reset_index(name="quantidade")
+    filtro_pagamento = tipo_de_pagamento(tipo_pagamento)
+    total = total.loc[total['pagamento'] == filtro_pagamento]
+
+    st.title("Quantidade de pedidos por Estado")
+    st.write("Escolha o filtro no menu do lado esquerdo")
+    fig = px.bar(total, x='estado', y='quantidade')
+    st.write(fig)
+    
 else:
     st.write('Nada foi carregado, por favor selecione umas das opções presente no sidebar')
 
