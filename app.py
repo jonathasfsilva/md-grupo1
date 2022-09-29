@@ -7,8 +7,7 @@ import mysql.connector
 # Uses st.experimental_singleton to only run once.
 @st.experimental_singleton
 def init_connection():
-    return mysql.connector.connect(user='root', password='password',
-                                database='pets',auth_plugin='mysql_native_password')
+    return mysql.connector.connect(**st.secrets["mysql"])
 
 conn = init_connection()
 

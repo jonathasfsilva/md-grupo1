@@ -3,7 +3,14 @@ import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # Gráficos interativos
 import streamlit as st  # 🎈 data web app desenvolvimento
+import mysql.connector
 #from graficos import *
+
+@st.experimental_singleton
+def init_connection():
+    return mysql.connector.connect(**st.secrets["mysql"])
+
+conn = init_connection()
 
 #Comando de execução do streamlit
 st.set_page_config(
