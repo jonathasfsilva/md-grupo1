@@ -14,6 +14,9 @@
   <li>Execute:
     <code>streamlit run ecommerce.py</code>
   </li>
+  <li>Caso seja Windows 11 sete o diretório de instalação do Streamlit (C:\Users\NomeUsuario\AppData\Roaming\Python\Python36\Scripts) no PATH e execute:
+    </br><code>py -m streamlit run ecommerce.py</code>
+  </li>
 <ol>
 
 ## Estrutura do repositorio 
