@@ -71,11 +71,13 @@ def questao_1(x, y, tabela, key ,chaveTabela) :
     chaveTabela=chaveTabela,
     key=key
 )) 
-    '''result = []
-    for item in query:
-        result.append(str(item))
-    df = pd.DataFrame(zip(result), columns=[x, 'quantidade_pedido','dt.dia_semana'])'''
-    return st.write(query)
+    qtd,temp1,dia = [],[],[]
+    for quantidade_pedido,temp,dia_semana in query:
+        qtd.append(str(quantidade_pedido))
+        temp1.append(str(temp))
+        dia.append(str(dia_semana))
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'dia_semana'])
+    return st.write(df)
 
 
 def questao_2(x, y, tabela, key ,chaveTabela) :
