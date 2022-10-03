@@ -1,3 +1,4 @@
+
 import numpy as np  # np mean, np random
 import pandas as pd  # read csv, df manipulation
 import plotly.express as px  # Gráficos interativos
@@ -27,11 +28,6 @@ def estadosLista(x, tabela):
         result.append(str(item)[2:-3])
 
     return result
-
-
-def convertDf(x, y):
-    df = pd.DataFrame(estadosLista(), columns=[x, y])
-    return df
 
 y = 'valorPedido'
 x = st.sidebar.selectbox(
@@ -66,7 +62,7 @@ def questao_1(x, y, tabela, key ,chaveTabela) :
     FROM fatopedido fp 
     LEFT JOIN {tabela} t ON t.{chaveTabela} = fp.{key} 
     LEFT JOIN dimtempo dt ON dt.key_data = fp.dimATempo_key
-    GROUP BY 3
+    GROUP BY 3,2
     ORDER BY 1 DESC;
 """.format(
     x=x,
@@ -75,10 +71,11 @@ def questao_1(x, y, tabela, key ,chaveTabela) :
     chaveTabela=chaveTabela,
     key=key
 )) 
-    result = []
+    '''result = []
     for item in query:
         result.append(str(item))
-    return result
+    df = pd.DataFrame(zip(result), columns=[x, 'quantidade_pedido','dt.dia_semana'])'''
+    return st.write(query)
 
 
 def questao_2(x, y, tabela, key ,chaveTabela) :
@@ -102,7 +99,8 @@ def questao_2(x, y, tabela, key ,chaveTabela) :
     result = []
     for item in query:
         result.append(str(item))
-    return result
+    df = pd.DataFrame(result, columns=[x, 'quantidade_pedido', 'dia_ehdiautil'])
+    return df
 
 
 def questao_3(x, y, tabela, key, chaveTabela) :
@@ -126,7 +124,8 @@ def questao_3(x, y, tabela, key, chaveTabela) :
     result = []
     for item in query:
         result.append(str(item))
-    return result
+    df = pd.DataFrame(result, columns=[x, 'quantidade_pedido', 'media_nota_avaliacao'])
+    return df
 
 def questao_4(x, y, tabela, key, chaveTabela) :
     query = run_query(
@@ -137,7 +136,7 @@ def questao_4(x, y, tabela, key, chaveTabela) :
         FROM fatopedido fp
         LEFT JOIN dimlocalizacao dl ON dl.key = fp.dimLocalizacao_key
         LEFT JOIN {tabela} dp ON dp.{chaveTabela} = fp.{key}
-        GROUP BY 2, 3
+        GROUP BY 3
         ORDER BY 1 DESC;
     """.format(
         x=x,
@@ -149,7 +148,8 @@ def questao_4(x, y, tabela, key, chaveTabela) :
     result = []
     for item in query:
         result.append(str(item))
-    return result
+    df = pd.DataFrame(result, columns=[x, 'quantidade_pedido', 'estado_sigla'])
+    return df
 
 def questao_5(x, y, tabela, key, chaveTabela) :
     query = run_query(
@@ -178,10 +178,15 @@ def questao_5(x, y, tabela, key, chaveTabela) :
     result = []
     for item in query:
         result.append(str(item))
-    return result
+    df = pd.DataFrame(result, columns=[x, 'quantidade_pedido', 'stacoes'])
+    return df
 
-#st.write(questao_1(x,y,tabela,key, chaveTabela))
+st.write(questao_1(x,y,tabela,key, chaveTabela))
 #st.write(questao_2(x,y,tabela,key, chaveTabela))
 #st.write(questao_3(x,y,tabela,key, chaveTabela))
 #st.write(questao_4(x,y,tabela,key, chaveTabela))
-st.write(questao_5(x,y,tabela,key, chaveTabela))
+#st.write(questao_5(x,y,tabela,key, chaveTabela))
+
+
+    
+
