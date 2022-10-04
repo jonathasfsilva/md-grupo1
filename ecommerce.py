@@ -98,13 +98,16 @@ def questao_2(x, y, tabela, key ,chaveTabela) :
     chaveTabela=chaveTabela,
     key=key
 )) 
-    result = []
-    for item in query:
-        result.append(str(item))
-    df = pd.DataFrame(result, columns=[x, 'quantidade_pedido', 'dia_ehdiautil'])
-    return df
-
-
+ 
+    qtd,temp1,dia = [],[],[]
+    for quantidade_pedido,temp,dia_semana in query:
+        qtd.append(str(quantidade_pedido))
+        temp1.append(str(temp))
+        dia.append(str(dia_semana))
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'dia_ehdiautil'])
+    return st.write(df)
+    
+    
 def questao_3(x, y, tabela, key, chaveTabela) :
     query = run_query(
 """ SELECT 
@@ -123,11 +126,15 @@ def questao_3(x, y, tabela, key, chaveTabela) :
     chaveTabela=chaveTabela,
     key=key
 )) 
-    result = []
-    for item in query:
-        result.append(str(item))
-    df = pd.DataFrame(result, columns=[x, 'quantidade_pedido', 'media_nota_avaliacao'])
-    return df
+
+    qtd,temp1,dia = [],[],[]
+    for quantidade_pedido,temp,dia_semana in query:
+        qtd.append(str(quantidade_pedido))
+        temp1.append(str(temp))
+        dia.append(str(dia_semana))
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'media_nota_avaliacao'])    
+    return st.write(df)
+    
 
 def questao_4(x, y, tabela, key, chaveTabela) :
     query = run_query(
@@ -147,11 +154,14 @@ def questao_4(x, y, tabela, key, chaveTabela) :
         chaveTabela=chaveTabela,
         key=key
 )) 
-    result = []
-    for item in query:
-        result.append(str(item))
-    df = pd.DataFrame(result, columns=[x, 'quantidade_pedido', 'estado_sigla'])
-    return df
+
+    qtd,temp1,dia = [],[],[]
+    for quantidade_pedido,temp,dia_semana in query:
+        qtd.append(str(quantidade_pedido))
+        temp1.append(str(temp))
+        dia.append(str(dia_semana))
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido', x, 'estado_sigla'])    
+    return st.write(df)
 
 def questao_5(x, y, tabela, key, chaveTabela) :
     query = run_query(
@@ -177,17 +187,21 @@ def questao_5(x, y, tabela, key, chaveTabela) :
         chaveTabela=chaveTabela,
         key=key
 )) 
-    result = []
-    for item in query:
-        result.append(str(item))
-    df = pd.DataFrame(result, columns=[x, 'quantidade_pedido', 'stacoes'])
-    return df
+
+    qtd,temp1,dia = [],[],[]
+    for quantidade_pedido,temp,dia_semana in query:
+        qtd.append(str(quantidade_pedido))
+        temp1.append(str(temp))
+        dia.append(str(dia_semana))
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'estações'])    
+    return st.write(df)
+    
 
 st.write(questao_1(x,y,tabela,key, chaveTabela))
-#st.write(questao_2(x,y,tabela,key, chaveTabela))
-#st.write(questao_3(x,y,tabela,key, chaveTabela))
-#st.write(questao_4(x,y,tabela,key, chaveTabela))
-#st.write(questao_5(x,y,tabela,key, chaveTabela))
+st.write(questao_2(x,y,tabela,key, chaveTabela))
+st.write(questao_3(x,y,tabela,key, chaveTabela))
+st.write(questao_4(x,y,tabela,key, chaveTabela))
+st.write(questao_5(x,y,tabela,key, chaveTabela))
 
 
     
