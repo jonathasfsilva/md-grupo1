@@ -160,8 +160,16 @@ def questao_4(x, y, tabela, key, chaveTabela) :
         qtd.append(str(quantidade_pedido))
         temp1.append(str(temp))
         dia.append(str(dia_semana))
-    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido', x, 'estado_sigla'])    
-    return st.write(df)
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',  'estado_sigla', x])    
+    st.write(df)
+    st.markdown("###  Bar Chart")
+
+    fig4 =  px.bar(df,x='estado_sigla',y='quantidade_pedido', color=x) 
+    st.write(fig4)
+
+    fig41 =  px.scatter(df,x='estado_sigla' ,y= 'quantidade_pedido', color= x) 
+    st.write(fig41)
+
 
 def questao_5(x, y, tabela, key, chaveTabela) :
     query = run_query(
