@@ -154,9 +154,9 @@ def questao_3(x, y, tabela, key, chaveTabela) :
     df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido','media_nota_avaliacao', x])    
     
     st.write("Qual a média de avaliação dos pedidos por tipo selecionado")
-    fig3_a = px.scatter(df, x=df.media_nota_avaliacao, y=df[x],size_max=100, color=df.media_nota_avaliacao)
+    fig3_a = px.scatter(df, x=df.media_nota_avaliacao, y=df.quantidade_pedido,size_max=100, color=df[x])
     st.write(fig3_a)
-    fig3_b = px.pie(df, values=df.media_nota_avaliacao, names=df[x])
+    fig3_b = px.pie(df, values=df.media_nota_avaliacao, names=df.quantidade_pedido, color=df[x])
     fig3_b.update_traces(textposition='inside')
     fig3_b.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
     st.write(fig3_b)
@@ -189,7 +189,7 @@ def questao_4(x, y, tabela, key, chaveTabela) :
         dia.append(str(dia_semana))
     df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',  'estado_sigla', x])    
     st.write(df)
-     st.markdown("Qual a quantidade de pedidos realizados por de acordo com cada variável do filtro?")
+    st.markdown("Qual a quantidade de pedidos realizados por de acordo com cada variável do filtro?")
     st.markdown("###  Bar Chart")
 
     fig4 =  px.bar(df,x='estado_sigla',y='quantidade_pedido', color=x) 
