@@ -241,8 +241,14 @@ def questao_5() :
         qtd.append(str(quantidade_pedido))
         temp1.append(str(temp))
         dia.append(str(dia_semana))
-    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'estações'])    
-    return st.write(df)
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'estações'])
+    st.markdown("Qual a quantidade de pedidos realizados de acordo com as estações do ano?")
+    st.markdown("###  Bar Chart")
+    fig = px.bar(df, x=x, y='quantidade_pedido', color='estações')
+    st.markdown("###  Scatter Chart")
+    fig2 = px.scatter(df, x='quantidade_pedido', y=x, color="estações")
+    st.write(fig)
+    st.write(fig2)
     
 
 
