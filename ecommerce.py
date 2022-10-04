@@ -189,6 +189,7 @@ def questao_4(x, y, tabela, key, chaveTabela) :
         dia.append(str(dia_semana))
     df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',  'estado_sigla', x])    
     st.write(df)
+     st.markdown("Qual a quantidade de pedidos realizados por de acordo com cada variável do filtro?")
     st.markdown("###  Bar Chart")
 
     fig4 =  px.bar(df,x='estado_sigla',y='quantidade_pedido', color=x) 
