@@ -226,7 +226,7 @@ def questao_3() :
 def questao_4() :
     x = st.selectbox(
     "campos de consulta Geral: ",
-    ("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao","data_de_compra", "ano_numero", "mes_texto", 'mes_numero', 'mes_numero_ano' ,'dia_semana' , 'dia_semana_numero'
+    ("categoria_produto", "tipo_pagamento", "nota_avaliacao","data_de_compra", "ano_numero", "mes_texto", 'mes_numero', 'mes_numero_ano' ,'dia_semana' , 'dia_semana_numero'
 ,'semana_numero_ano', 'dia_numero_mes', 'dia_numero_ano', 'semana_nome', 'dia_ehdiautil', 'semestre_texto' , 'semestre_numero', 'semestre_numero_ano', 'trimestre_texto', 'trimestre_numero', 'trimestre_numero_ano'),
 )
     y = 'valorPedido'
@@ -242,9 +242,6 @@ def questao_4() :
     elif x == 'tipo_pagamento':
         tabela = 'dimpagamento'
         key = "dimPagamento_key"
-    elif x == 'cidade' or x == 'estado_sigla':
-        tabela = 'dimlocalizacao'
-        key = "dimLocalizacao_key"
     elif x == 'data_de_compra' or x == 'ano_numero' or x == 'mes_texto' or x == 'mes_numero' or x == 'mes_numero_ano' or x == 'dia_semana' or x == 'dia_semana_numero' or x == 'semana_numero_ano' or x == 'dia_numero_mes' or x == 'dia_numero_ano' or x == 'semana_nome' or x == 'dia_ehdiautil' or x == 'semestre_texto' or x == 'semestre_numero' or x == 'semestre_numero_ano' or x == 'trimestre_texto' or x == 'trimestre_numero' or x == 'trimestre_numero_ano':
         tabela = 'dimtempo'
         key = "dimAtempo_key"
