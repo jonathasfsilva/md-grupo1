@@ -136,7 +136,7 @@ def questao_3(x, y, tabela, key, chaveTabela) :
     LEFT JOIN dimavaliacao da ON da.key = fp.dimAvaliacao_key
     LEFT JOIN {tabela} dp ON dp.{chaveTabela} = fp.{key}
     GROUP BY 3
-    ORDER BY 1,2 DESC;
+    ORDER BY 2 ;
 """.format(
     x=x,
     y=y,
