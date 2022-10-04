@@ -118,7 +118,7 @@ def questao_3(x, y, tabela, key, chaveTabela) :
     LEFT JOIN dimavaliacao da ON da.key = fp.dimAvaliacao_key
     LEFT JOIN {tabela} dp ON dp.{chaveTabela} = fp.{key}
     GROUP BY 3
-    ORDER BY 1 DESC;
+    ORDER BY 1,2 DESC;
 """.format(
     x=x,
     y=y,
@@ -132,8 +132,16 @@ def questao_3(x, y, tabela, key, chaveTabela) :
         qtd.append(str(quantidade_pedido))
         temp1.append(str(temp))
         dia.append(str(dia_semana))
-    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'media_nota_avaliacao'])    
-    return st.write(df)
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido','media_nota_avaliacao', x])    
+    
+    st.write("Qual a média de avaliação dos pedidos por tipo selecionado")
+    fig3_a = px.scatter(df, x=df.media_nota_avaliacao, y=df[x],size_max=100, color=df.media_nota_avaliacao)
+    st.write(fig3_a)
+    fig3_b = px.pie(df, values=df.media_nota_avaliacao, names=df[x])
+    fig3_b.update_traces(textposition='inside')
+    fig3_b.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
+    st.write(fig3_b)
+    
     
 
 def questao_4(x, y, tabela, key, chaveTabela) :
@@ -197,12 +205,9 @@ def questao_5(x, y, tabela, key, chaveTabela) :
     return st.write(df)
     
 
-st.write(questao_1(x,y,tabela,key, chaveTabela))
-st.write(questao_2(x,y,tabela,key, chaveTabela))
+# st.write(questao_1(x,y,tabela,key, chaveTabela))
+# st.write(questao_2(x,y,tabela,key, chaveTabela))
 st.write(questao_3(x,y,tabela,key, chaveTabela))
-st.write(questao_4(x,y,tabela,key, chaveTabela))
-st.write(questao_5(x,y,tabela,key, chaveTabela))
-
-
-    
+# st.write(questao_4(x,y,tabela,key, chaveTabela))
+# st.write(questao_5(x,y,tabela,key, chaveTabela))
 
