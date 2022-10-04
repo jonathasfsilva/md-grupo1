@@ -90,10 +90,6 @@ def questao_1() :
     fig2 =  px.scatter(df,'quantidade_pedido', x,color = 'dia_semana',hover_name= x) 
     st.write(fig2)
 
-    st.markdown("###  Pie Chart")
-    fig3 = px.pie(df, values='quantidade_pedido', names=x)
-    st.write(fig3)
-
     st.markdown("###  Data Frame")
     st.write(df)
     
