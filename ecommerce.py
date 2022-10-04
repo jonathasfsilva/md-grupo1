@@ -28,13 +28,18 @@ def estadosLista(x, tabela):
         result.append(str(item)[2:-3])
 
     return result
-
-y = 'valorPedido'
-x = st.sidebar.selectbox(
+st.header("Modelagem de Dados - Dw Pe")
+pagina = st.sidebar.selectbox("Escolha das Páginas: ",("Questão1","Questão2","Questão3","Questão4","Questão5"))
+x = st.selectbox(
     "campos de consulta: ",
     ("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao","data_de_compra", "ano_numero", "mes_texto", 'mes_numero', 'mes_numero_ano' ,'dia_semana' , 'dia_semana_numero'
 ,'semana_numero_ano', 'dia_numero_mes', 'dia_numero_ano', 'semana_nome', 'dia_ehdiautil', 'semestre_texto' , 'semestre_numero', 'semestre_numero_ano', 'trimestre_texto', 'trimestre_numero', 'trimestre_numero_ano'),
 )
+
+  
+y = 'valorPedido'
+tabela = ''
+key = ''
 chaveTabela = 'key'
 if x == "categoria_produto":
     tabela = "dimproduto"
@@ -77,8 +82,21 @@ def questao_1(x, y, tabela, key ,chaveTabela) :
         temp1.append(str(temp))
         dia.append(str(dia_semana))
     df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'dia_semana'])
-    return st.write(df)
+    st.markdown("Qual a quantidade de pedidos realizados de acordo com os dias da semana ou final de semana?")
+    st.markdown("###  Bar Chart")
+    fig1 =  px.bar(df,'dia_semana','quantidade_pedido',color = x) 
+    st.write(fig1)
 
+    st.markdown("### Scatter Chart")
+    fig2 =  px.scatter(df, x,'quantidade_pedido',color = 'dia_semana',hover_name= x, size_max=60) 
+    fig2.update_traces(marker_size=2)
+    st.write(fig2)
+
+    #st.markdown("###  Pie Chart")
+    #fig6 = px.pie(df, values=x, names='quantidade_pedido')
+    #st.write(fig6)
+    #st.markdown("###  Pie Chart")
+    
 
 def questao_2(x, y, tabela, key ,chaveTabela) :
     query = run_query(
@@ -89,7 +107,7 @@ def questao_2(x, y, tabela, key ,chaveTabela) :
     FROM fatopedido fp
     LEFT JOIN {tabela} t ON t.{chaveTabela} = fp.{key} 
     LEFT JOIN dimtempo dt ON dt.key_data = fp.dimATempo_key
-    GROUP BY 2
+    GROUP BY 2,3
     ORDER BY 1 DESC;
 """.format(
     x=x,
@@ -118,7 +136,7 @@ def questao_3(x, y, tabela, key, chaveTabela) :
     LEFT JOIN dimavaliacao da ON da.key = fp.dimAvaliacao_key
     LEFT JOIN {tabela} dp ON dp.{chaveTabela} = fp.{key}
     GROUP BY 3
-    ORDER BY 1 DESC;
+    ORDER BY 2 ;
 """.format(
     x=x,
     y=y,
@@ -132,8 +150,17 @@ def questao_3(x, y, tabela, key, chaveTabela) :
         qtd.append(str(quantidade_pedido))
         temp1.append(str(temp))
         dia.append(str(dia_semana))
-    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'media_nota_avaliacao'])    
-    return st.write(df)
+
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido','media_nota_avaliacao', x])    
+    
+    st.write("Qual a média de avaliação dos pedidos por tipo selecionado")
+    fig3_a = px.scatter(df, x=df.media_nota_avaliacao, y=df[x],size_max=100, color=df.media_nota_avaliacao)
+    st.write(fig3_a)
+    fig3_b = px.pie(df, values=df.media_nota_avaliacao, names=df[x])
+    fig3_b.update_traces(textposition='inside')
+    fig3_b.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
+    st.write(fig3_b)
+    
     
 
 def questao_4(x, y, tabela, key, chaveTabela) :
@@ -145,7 +172,7 @@ def questao_4(x, y, tabela, key, chaveTabela) :
         FROM fatopedido fp
         LEFT JOIN dimlocalizacao dl ON dl.key = fp.dimLocalizacao_key
         LEFT JOIN {tabela} dp ON dp.{chaveTabela} = fp.{key}
-        GROUP BY 3
+        GROUP BY 1,2
         ORDER BY 1 DESC;
     """.format(
         x=x,
@@ -171,7 +198,28 @@ def questao_4(x, y, tabela, key, chaveTabela) :
     st.write(fig41)
 
 
-def questao_5(x, y, tabela, key, chaveTabela) :
+def questao_5() :
+    ajuste = st.selectbox("campos de consulta: ",("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao"))
+    y = 'valorPedido'
+    tabela = ''
+    key = ''
+    chaveTabela = 'key'
+    if ajuste == "categoria_produto":
+        tabela = "dimproduto"
+        key = "dimProduto_key"
+    elif ajuste == "nota_avaliacao":
+        tabela = "dimavaliacao"
+        key = "dimAvaliacao_key"
+    elif ajuste == 'tipo_pagamento':
+        tabela = 'dimpagamento'
+        key = "dimPagamento_key"
+    elif ajuste == 'cidade' or x == 'estado_sigla':
+        tabela = 'dimlocalizacao'
+        key = "dimLocalizacao_key"
+    elif ajuste == 'data_de_compra' or x == 'ano_numero' or x == 'mes_texto' or x == 'mes_numero' or x == 'mes_numero_ano' or x == 'dia_semana' or x == 'dia_semana_numero' or x == 'semana_numero_ano' or x == 'dia_numero_mes' or x == 'dia_numero_ano' or x == 'semana_nome' or x == 'dia_ehdiautil' or x == 'semestre_texto' or x == 'semestre_numero' or x == 'semestre_numero_ano' or x == 'trimestre_texto' or x == 'trimestre_numero' or x == 'trimestre_numero_ano':
+        tabela = 'dimtempo'
+        key = "dimAtempo_key"
+        chaveTabela = 'key_data'
     query = run_query(
     """ 
     SELECT 
@@ -189,7 +237,7 @@ def questao_5(x, y, tabela, key, chaveTabela) :
     GROUP BY 2, 3
     ORDER BY 1 DESC
     """.format(
-        x=x,
+        x=ajuste,
         y=y,
         tabela=tabela,
         chaveTabela=chaveTabela,
@@ -201,9 +249,16 @@ def questao_5(x, y, tabela, key, chaveTabela) :
         qtd.append(str(quantidade_pedido))
         temp1.append(str(temp))
         dia.append(str(dia_semana))
-    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'estações'])    
-    return st.write(df)
+    df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'estações'])
+    st.markdown("Qual a quantidade de pedidos realizados de acordo com as estações do ano?")
+    st.markdown("###  Bar Chart")
+    fig = px.bar(df, x=x, y='quantidade_pedido', color='estações')
+    st.markdown("###  Scatter Chart")
+    fig2 = px.scatter(df, x='quantidade_pedido', y=x, color="estações")
+    st.write(fig)
+    st.write(fig2)
     
+
 
 st.write(questao_1(x,y,tabela,key, chaveTabela))
 st.write(questao_2(x,y,tabela,key, chaveTabela))
@@ -211,6 +266,22 @@ st.write(questao_3(x,y,tabela,key, chaveTabela))
 st.write(questao_4(x,y,tabela,key, chaveTabela))
 st.write(questao_5(x,y,tabela,key, chaveTabela))
 
-
+if pagina == "Questão1":
+    st.write(questao_1(x,y,tabela,key, chaveTabela))
     
+elif pagina == "Questão2":
+    st.write(questao_2(x,y,tabela,key, chaveTabela))
+
+elif pagina == "Questão3":
+    st.write(questao_3(x,y,tabela,key, chaveTabela))
+
+elif pagina == "Questão4":
+    st.write(questao_4(x,y,tabela,key, chaveTabela))
+
+elif pagina == "Questão5": 
+   st.write(questao_5())
+
+else:
+    st.write("Página não encontrada")
+
 
