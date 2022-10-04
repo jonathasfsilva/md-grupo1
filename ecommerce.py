@@ -28,37 +28,36 @@ def estadosLista(x, tabela):
         result.append(str(item)[2:-3])
 
     return result
-st.header("Modelagem de Dados - Dw Pe")
+st.header("Modelagem de Dados - Dw Pedido")
 pagina = st.sidebar.selectbox("Escolha das Páginas: ",("Questão1","Questão2","Questão3","Questão4","Questão5"))
-x = st.selectbox(
+
+
+def questao_1() :
+    x = st.selectbox(
     "campos de consulta Geral: ",
     ("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao","data_de_compra", "ano_numero", "mes_texto", 'mes_numero', 'mes_numero_ano' ,'dia_semana' , 'dia_semana_numero'
 ,'semana_numero_ano', 'dia_numero_mes', 'dia_numero_ano', 'semana_nome', 'dia_ehdiautil', 'semestre_texto' , 'semestre_numero', 'semestre_numero_ano', 'trimestre_texto', 'trimestre_numero', 'trimestre_numero_ano'),
 )
-
-  
-y = 'valorPedido'
-tabela = ''
-key = ''
-chaveTabela = 'key'
-if x == "categoria_produto":
-    tabela = "dimproduto"
-    key = "dimProduto_key"
-elif x == "nota_avaliacao":
-    tabela = "dimavaliacao"
-    key = "dimAvaliacao_key"
-elif x == 'tipo_pagamento':
-    tabela = 'dimpagamento'
-    key = "dimPagamento_key"
-elif x == 'cidade' or x == 'estado_sigla':
-    tabela = 'dimlocalizacao'
-    key = "dimLocalizacao_key"
-elif x == 'data_de_compra' or x == 'ano_numero' or x == 'mes_texto' or x == 'mes_numero' or x == 'mes_numero_ano' or x == 'dia_semana' or x == 'dia_semana_numero' or x == 'semana_numero_ano' or x == 'dia_numero_mes' or x == 'dia_numero_ano' or x == 'semana_nome' or x == 'dia_ehdiautil' or x == 'semestre_texto' or x == 'semestre_numero' or x == 'semestre_numero_ano' or x == 'trimestre_texto' or x == 'trimestre_numero' or x == 'trimestre_numero_ano':
-    tabela = 'dimtempo'
-    key = "dimAtempo_key"
-    chaveTabela = 'key_data'
-
-def questao_1(x, y, tabela, key ,chaveTabela) :
+    y = 'valorPedido'
+    tabela = ''
+    key = ''
+    chaveTabela = 'key'
+    if x == "categoria_produto":
+        tabela = "dimproduto"
+        key = "dimProduto_key"
+    elif x == "nota_avaliacao":
+        tabela = "dimavaliacao"
+        key = "dimAvaliacao_key"
+    elif x == 'tipo_pagamento':
+        tabela = 'dimpagamento'
+        key = "dimPagamento_key"
+    elif x == 'cidade' or x == 'estado_sigla':
+        tabela = 'dimlocalizacao'
+        key = "dimLocalizacao_key"
+    elif x == 'data_de_compra' or x == 'ano_numero' or x == 'mes_texto' or x == 'mes_numero' or x == 'mes_numero_ano' or x == 'dia_semana' or x == 'dia_semana_numero' or x == 'semana_numero_ano' or x == 'dia_numero_mes' or x == 'dia_numero_ano' or x == 'semana_nome' or x == 'dia_ehdiautil' or x == 'semestre_texto' or x == 'semestre_numero' or x == 'semestre_numero_ano' or x == 'trimestre_texto' or x == 'trimestre_numero' or x == 'trimestre_numero_ano':
+        tabela = 'dimtempo'
+        key = "dimAtempo_key"
+        chaveTabela = 'key_data'
     query = run_query(
 """ SELECT 
         COUNT({y}) AS quantidade_pedido  
@@ -94,9 +93,37 @@ def questao_1(x, y, tabela, key ,chaveTabela) :
     st.markdown("###  Pie Chart")
     fig3 = px.pie(df, values='quantidade_pedido', names=x)
     st.write(fig3)
+
+    st.markdown("###  Data Frame")
+    st.write(df)
     
 
-def questao_2(x, y, tabela, key ,chaveTabela) :
+def questao_2() :
+    x = st.selectbox(
+    "campos de consulta Geral: ",
+    ("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao","data_de_compra", "ano_numero", "mes_texto", 'mes_numero', 'mes_numero_ano' ,'dia_semana' , 'dia_semana_numero'
+,'semana_numero_ano', 'dia_numero_mes', 'dia_numero_ano', 'semana_nome', 'dia_ehdiautil', 'semestre_texto' , 'semestre_numero', 'semestre_numero_ano', 'trimestre_texto', 'trimestre_numero', 'trimestre_numero_ano'),
+)
+    y = 'valorPedido'
+    tabela = ''
+    key = ''
+    chaveTabela = 'key'
+    if x == "categoria_produto":
+        tabela = "dimproduto"
+        key = "dimProduto_key"
+    elif x == "nota_avaliacao":
+        tabela = "dimavaliacao"
+        key = "dimAvaliacao_key"
+    elif x == 'tipo_pagamento':
+        tabela = 'dimpagamento'
+        key = "dimPagamento_key"
+    elif x == 'cidade' or x == 'estado_sigla':
+        tabela = 'dimlocalizacao'
+        key = "dimLocalizacao_key"
+    elif x == 'data_de_compra' or x == 'ano_numero' or x == 'mes_texto' or x == 'mes_numero' or x == 'mes_numero_ano' or x == 'dia_semana' or x == 'dia_semana_numero' or x == 'semana_numero_ano' or x == 'dia_numero_mes' or x == 'dia_numero_ano' or x == 'semana_nome' or x == 'dia_ehdiautil' or x == 'semestre_texto' or x == 'semestre_numero' or x == 'semestre_numero_ano' or x == 'trimestre_texto' or x == 'trimestre_numero' or x == 'trimestre_numero_ano':
+        tabela = 'dimtempo'
+        key = "dimAtempo_key"
+        chaveTabela = 'key_data'
     query = run_query(
 """ SELECT 
         COUNT(fp.{y}) AS quantidade_pedido
@@ -121,10 +148,45 @@ def questao_2(x, y, tabela, key ,chaveTabela) :
         temp1.append(str(temp))
         dia.append(str(dia_semana))
     df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'dia_ehdiautil'])
-    return st.write(df)
+
+    st.markdown("Os períodos que ocorrem maior quantidade vendas por item selecionado no filtro estão relacionados a datas comemorativas?")
+
+    st.markdown("###  Bar Chart")
+    fig = px.bar(df, x=x, y='quantidade_pedido', color='dia_ehdiautil')
+    st.write(fig)
+    st.markdown("###  Scatter Chart")
+    fig2 = px.scatter(df, x='quantidade_pedido', y=x, color='dia_ehdiautil')
+    st.write(fig2)
+    st.markdown("###  Data Frame")
+    st.write(df)
     
     
-def questao_3(x, y, tabela, key, chaveTabela) :
+def questao_3() :
+    x = st.selectbox(
+    "campos de consulta Geral: ",
+    ("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao","data_de_compra", "ano_numero", "mes_texto", 'mes_numero', 'mes_numero_ano' ,'dia_semana' , 'dia_semana_numero'
+,'semana_numero_ano', 'dia_numero_mes', 'dia_numero_ano', 'semana_nome', 'dia_ehdiautil', 'semestre_texto' , 'semestre_numero', 'semestre_numero_ano', 'trimestre_texto', 'trimestre_numero', 'trimestre_numero_ano'),
+)
+    y = 'valorPedido'
+    tabela = ''
+    key = ''
+    chaveTabela = 'key'
+    if x == "categoria_produto":
+        tabela = "dimproduto"
+        key = "dimProduto_key"
+    elif x == "nota_avaliacao":
+        tabela = "dimavaliacao"
+        key = "dimAvaliacao_key"
+    elif x == 'tipo_pagamento':
+        tabela = 'dimpagamento'
+        key = "dimPagamento_key"
+    elif x == 'cidade' or x == 'estado_sigla':
+        tabela = 'dimlocalizacao'
+        key = "dimLocalizacao_key"
+    elif x == 'data_de_compra' or x == 'ano_numero' or x == 'mes_texto' or x == 'mes_numero' or x == 'mes_numero_ano' or x == 'dia_semana' or x == 'dia_semana_numero' or x == 'semana_numero_ano' or x == 'dia_numero_mes' or x == 'dia_numero_ano' or x == 'semana_nome' or x == 'dia_ehdiautil' or x == 'semestre_texto' or x == 'semestre_numero' or x == 'semestre_numero_ano' or x == 'trimestre_texto' or x == 'trimestre_numero' or x == 'trimestre_numero_ano':
+        tabela = 'dimtempo'
+        key = "dimAtempo_key"
+        chaveTabela = 'key_data'
     query = run_query(
 """ SELECT 
         COUNT(fp.{y}) AS quantidade_pedido
@@ -154,14 +216,43 @@ def questao_3(x, y, tabela, key, chaveTabela) :
     st.write("Qual a média de avaliação dos pedidos por tipo selecionado")
     fig3_a = px.scatter(df, x=df.media_nota_avaliacao, y=df[x],size_max=100, color=df.media_nota_avaliacao)
     st.write(fig3_a)
+
     fig3_b = px.pie(df, values=df.media_nota_avaliacao, names=df[x])
     fig3_b.update_traces(textposition='inside')
     fig3_b.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
     st.write(fig3_b)
+
+    st.markdown("###  Data Frame")
+    st.write(df)
     
     
 
-def questao_4(x, y, tabela, key, chaveTabela) :
+def questao_4() :
+    x = st.selectbox(
+    "campos de consulta Geral: ",
+    ("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao","data_de_compra", "ano_numero", "mes_texto", 'mes_numero', 'mes_numero_ano' ,'dia_semana' , 'dia_semana_numero'
+,'semana_numero_ano', 'dia_numero_mes', 'dia_numero_ano', 'semana_nome', 'dia_ehdiautil', 'semestre_texto' , 'semestre_numero', 'semestre_numero_ano', 'trimestre_texto', 'trimestre_numero', 'trimestre_numero_ano'),
+)
+    y = 'valorPedido'
+    tabela = ''
+    key = ''
+    chaveTabela = 'key'
+    if x == "categoria_produto":
+        tabela = "dimproduto"
+        key = "dimProduto_key"
+    elif x == "nota_avaliacao":
+        tabela = "dimavaliacao"
+        key = "dimAvaliacao_key"
+    elif x == 'tipo_pagamento':
+        tabela = 'dimpagamento'
+        key = "dimPagamento_key"
+    elif x == 'cidade' or x == 'estado_sigla':
+        tabela = 'dimlocalizacao'
+        key = "dimLocalizacao_key"
+    elif x == 'data_de_compra' or x == 'ano_numero' or x == 'mes_texto' or x == 'mes_numero' or x == 'mes_numero_ano' or x == 'dia_semana' or x == 'dia_semana_numero' or x == 'semana_numero_ano' or x == 'dia_numero_mes' or x == 'dia_numero_ano' or x == 'semana_nome' or x == 'dia_ehdiautil' or x == 'semestre_texto' or x == 'semestre_numero' or x == 'semestre_numero_ano' or x == 'trimestre_texto' or x == 'trimestre_numero' or x == 'trimestre_numero_ano':
+        tabela = 'dimtempo'
+        key = "dimAtempo_key"
+        chaveTabela = 'key_data'
     query = run_query(
     """ SELECT 
             COUNT(fp.{y}) AS quantidade_pedido
@@ -170,7 +261,7 @@ def questao_4(x, y, tabela, key, chaveTabela) :
         FROM fatopedido fp
         LEFT JOIN dimlocalizacao dl ON dl.key = fp.dimLocalizacao_key
         LEFT JOIN {tabela} dp ON dp.{chaveTabela} = fp.{key}
-        GROUP BY 1,2
+        GROUP BY 2,3
         ORDER BY 1 DESC;
     """.format(
         x=x,
@@ -186,33 +277,35 @@ def questao_4(x, y, tabela, key, chaveTabela) :
         temp1.append(str(temp))
         dia.append(str(dia_semana))
     df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',  'estado_sigla', x])    
-    st.write(df)
-    st.markdown("Qual a quantidade de pedidos realizados por de acordo com cada variável do filtro?")
+    st.markdown("Qual a quantidade de pedidos realizados por consulta de acordo com cada variável do filtro?")
     st.markdown("###  Bar Chart")
-
-    fig4 =  px.bar(df,x='estado_sigla',y='quantidade_pedido', color=x) 
+    fig4 =  px.histogram(df,'estado_sigla','quantidade_pedido', color=x) 
     st.write(fig4)
-
-    fig41 =  px.scatter(df,x='estado_sigla' ,y= 'quantidade_pedido', color= x) 
+    st.markdown("###  Bar Scatter")
+    fig41 =  px.scatter(df,'estado_sigla' ,'quantidade_pedido', color= x) 
     st.write(fig41)
-
+    st.markdown("###  Data Frame")
+    st.write(df)
 
 def questao_5() :
-    ajuste = st.selectbox("Consulta para Questão5: ",("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao"))
+    x = st.selectbox(
+    "campos de consulta Geral: ",
+    ("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao"),
+)
     y = 'valorPedido'
     tabela = ''
     key = ''
     chaveTabela = 'key'
-    if ajuste == "categoria_produto":
+    if x == "categoria_produto":
         tabela = "dimproduto"
         key = "dimProduto_key"
-    elif ajuste == "nota_avaliacao":
+    elif x == "nota_avaliacao":
         tabela = "dimavaliacao"
         key = "dimAvaliacao_key"
-    elif ajuste == 'tipo_pagamento':
+    elif x == 'tipo_pagamento':
         tabela = 'dimpagamento'
         key = "dimPagamento_key"
-    elif ajuste == 'cidade' or ajuste == 'estado_sigla':
+    elif x == 'cidade' or x == 'estado_sigla':
         tabela = 'dimlocalizacao'
         key = "dimLocalizacao_key"
     query = run_query(
@@ -232,7 +325,7 @@ def questao_5() :
     GROUP BY 2, 3
     ORDER BY 1 DESC
     """.format(
-        x=ajuste,
+        x=x,
         y=y,
         tabela=tabela,
         chaveTabela=chaveTabela,
@@ -252,19 +345,22 @@ def questao_5() :
     st.markdown("###  Scatter Chart")
     fig2 = px.scatter(df, x='quantidade_pedido', y=x, color="estações")
     st.write(fig2)
+    st.markdown("###  Data Frame")
+    st.write(df)
+
     
 
 if pagina == "Questão1":
-    st.write(questao_1(x,y,tabela,key, chaveTabela))
+    st.write(questao_1())
     
 elif pagina == "Questão2":
-    st.write(questao_2(x,y,tabela,key, chaveTabela))
+    st.write(questao_2())
 
 elif pagina == "Questão3":
-    st.write(questao_3(x,y,tabela,key, chaveTabela))
+    st.write(questao_3())
 
 elif pagina == "Questão4":
-    st.write(questao_4(x,y,tabela,key, chaveTabela))
+    st.write(questao_4())
 
 elif pagina == "Questão5": 
    st.write(questao_5())
