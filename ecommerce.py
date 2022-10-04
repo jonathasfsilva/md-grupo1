@@ -31,7 +31,7 @@ def estadosLista(x, tabela):
 st.header("Modelagem de Dados - Dw Pe")
 pagina = st.sidebar.selectbox("Escolha das Páginas: ",("Questão1","Questão2","Questão3","Questão4","Questão5"))
 x = st.selectbox(
-    "campos de consulta: ",
+    "campos de consulta Geral: ",
     ("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao","data_de_compra", "ano_numero", "mes_texto", 'mes_numero', 'mes_numero_ano' ,'dia_semana' , 'dia_semana_numero'
 ,'semana_numero_ano', 'dia_numero_mes', 'dia_numero_ano', 'semana_nome', 'dia_ehdiautil', 'semestre_texto' , 'semestre_numero', 'semestre_numero_ano', 'trimestre_texto', 'trimestre_numero', 'trimestre_numero_ano'),
 )
@@ -82,20 +82,18 @@ def questao_1(x, y, tabela, key ,chaveTabela) :
         temp1.append(str(temp))
         dia.append(str(dia_semana))
     df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',x,'dia_semana'])
-    st.markdown("Qual a quantidade de pedidos realizados de acordo com os dias da semana ou final de semana?")
+    st.markdown("Qual a quantidade de pedidos por campo selecionado, realizados de acordo com os dias da semana ou final de semana?")
     st.markdown("###  Bar Chart")
     fig1 =  px.bar(df,'dia_semana','quantidade_pedido',color = x) 
     st.write(fig1)
 
     st.markdown("### Scatter Chart")
-    fig2 =  px.scatter(df, x,'quantidade_pedido',color = 'dia_semana',hover_name= x, size_max=60) 
-    fig2.update_traces(marker_size=2)
+    fig2 =  px.scatter(df,'quantidade_pedido', x,color = 'dia_semana',hover_name= x) 
     st.write(fig2)
 
-    #st.markdown("###  Pie Chart")
-    #fig6 = px.pie(df, values=x, names='quantidade_pedido')
-    #st.write(fig6)
-    #st.markdown("###  Pie Chart")
+    st.markdown("###  Pie Chart")
+    fig3 = px.pie(df, values='quantidade_pedido', names=x)
+    st.write(fig3)
     
 
 def questao_2(x, y, tabela, key ,chaveTabela) :
@@ -189,7 +187,7 @@ def questao_4(x, y, tabela, key, chaveTabela) :
         dia.append(str(dia_semana))
     df = pd.DataFrame(zip(qtd,temp1,dia), columns=['quantidade_pedido',  'estado_sigla', x])    
     st.write(df)
-     st.markdown("Qual a quantidade de pedidos realizados por de acordo com cada variável do filtro?")
+    st.markdown("Qual a quantidade de pedidos realizados por de acordo com cada variável do filtro?")
     st.markdown("###  Bar Chart")
 
     fig4 =  px.bar(df,x='estado_sigla',y='quantidade_pedido', color=x) 
@@ -200,7 +198,7 @@ def questao_4(x, y, tabela, key, chaveTabela) :
 
 
 def questao_5() :
-    ajuste = st.selectbox("campos de consulta: ",("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao"))
+    ajuste = st.selectbox("Consulta para Questão5: ",("categoria_produto", "tipo_pagamento", "estado_sigla", "cidade", "nota_avaliacao"))
     y = 'valorPedido'
     tabela = ''
     key = ''
@@ -214,13 +212,9 @@ def questao_5() :
     elif ajuste == 'tipo_pagamento':
         tabela = 'dimpagamento'
         key = "dimPagamento_key"
-    elif ajuste == 'cidade' or x == 'estado_sigla':
+    elif ajuste == 'cidade' or ajuste == 'estado_sigla':
         tabela = 'dimlocalizacao'
         key = "dimLocalizacao_key"
-    elif ajuste == 'data_de_compra' or x == 'ano_numero' or x == 'mes_texto' or x == 'mes_numero' or x == 'mes_numero_ano' or x == 'dia_semana' or x == 'dia_semana_numero' or x == 'semana_numero_ano' or x == 'dia_numero_mes' or x == 'dia_numero_ano' or x == 'semana_nome' or x == 'dia_ehdiautil' or x == 'semestre_texto' or x == 'semestre_numero' or x == 'semestre_numero_ano' or x == 'trimestre_texto' or x == 'trimestre_numero' or x == 'trimestre_numero_ano':
-        tabela = 'dimtempo'
-        key = "dimAtempo_key"
-        chaveTabela = 'key_data'
     query = run_query(
     """ 
     SELECT 
@@ -254,18 +248,11 @@ def questao_5() :
     st.markdown("Qual a quantidade de pedidos realizados de acordo com as estações do ano?")
     st.markdown("###  Bar Chart")
     fig = px.bar(df, x=x, y='quantidade_pedido', color='estações')
+    st.write(fig)
     st.markdown("###  Scatter Chart")
     fig2 = px.scatter(df, x='quantidade_pedido', y=x, color="estações")
-    st.write(fig)
     st.write(fig2)
     
-
-
-st.write(questao_1(x,y,tabela,key, chaveTabela))
-st.write(questao_2(x,y,tabela,key, chaveTabela))
-st.write(questao_3(x,y,tabela,key, chaveTabela))
-st.write(questao_4(x,y,tabela,key, chaveTabela))
-st.write(questao_5(x,y,tabela,key, chaveTabela))
 
 if pagina == "Questão1":
     st.write(questao_1(x,y,tabela,key, chaveTabela))
